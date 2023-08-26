@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" new view for Amenity objects handling """
+"""module amenities - handles amenties objects for RestfulAPI"""
 from models.amenity import Amenity
 from models import storage
 from api.v1.views import app_views
@@ -8,7 +8,7 @@ from flask import abort, jsonify, make_response, request
 
 @app_views.route('/amenities', methods=['GET'], strict_slashes=False)
 def get_amenities():
-    """Retrieves the list of all Amenity"""
+    """retrieves list of amenity objects"""
     all_amenities = storage.all(Amenity).values()
     list_amenities = []
     for amenities in all_amenities:
