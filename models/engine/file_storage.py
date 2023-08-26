@@ -11,8 +11,6 @@ from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
-import models
-
 
 classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
            "Place": Place, "Review": Review, "State": State, "User": User}
@@ -52,10 +50,13 @@ class FileStorage:
 
     def reload(self):
         """deserializes the JSON file to __objects"""
-        with open(self.__file_path, 'r') as f:
-            jo = json.load(f)
-        for key in jo:
-            self.__objects[key] = classes[jo[key]["__class__"]](**jo[key])
+        try:
+            with open(self.__file_path, 'r') as f:
+                jo = json.load(f)
+            for key in jo:
+                self.__objects[key] = classes[jo[key]["__class__"]](**jo[key])
+        except Exception:
+            pass
 
     def delete(self, obj=None):
         """delete obj from __objects if it’s inside"""
@@ -69,18 +70,13 @@ class FileStorage:
         self.reload()
 
     def get(self, cls, id):
-        """method to retrieve an object """
-        todos = models.storage.all()
-        for valor in todos.values():
-            if valor.id == id:
-                return valor
+        """A method to retrieve one object"""
+        obj = self.all(cls)
+        for key in obj.keys():
+            if key.find(id) > -1 or key.find(id) < -1:
+                return obj[key]
         return None
 
     def count(self, cls=None):
-        """ method to count the number of stored objects """
-        todas_clase = classes.values()
-        if cls:
-            objs = models.storage.all(cls)
-            return len(objs)
-
-        return len(models.storage.all())
+        """A method to count the number of objects in storage"""
+        return len(self.all(cls))
