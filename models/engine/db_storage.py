@@ -65,7 +65,7 @@ class DBStorage:
             self.__session.delete(obj)
 
     def reload(self):
-        """reloads data from the databases"""
+        """reloads data from the database"""
         Base.metadata.create_all(self.__engine)
         sess_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(sess_factory)
@@ -76,18 +76,11 @@ class DBStorage:
         self.__session.remove()
 
     def get(self, cls, id):
-        """method to retrieve an object """
-           todos = models.storage.all()
-           for valor in todos.values():
-                      if valor.id == id:
-                      return valor
-           return None
+        """A method to retrieve one object"""
+        if cls in classes.values():
+            return self.__session.query(cls).filter(cls.id == id).first()
+        return None
 
     def count(self, cls=None):
-        """ method to count the number of stored objects """
-        todas_clase = classes.values()
-        if cls:
-            objs = models.storage.all(cls)
-            return len(objs)
-
-        return len(models.storage.all())
+        """A method to count the number of objects in storage"""
+        return len(self.all(cls))
