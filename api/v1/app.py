@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""API development with flask """
+""" API development with flask """
 from flask import Flask, Blueprint
 from models import storage
 from api.v1.views import app_views
@@ -12,12 +12,12 @@ app.register_blueprint(app_views)
 
 @app.teardown_appcontext
 def close():
-    """methods for handling @app.teardown_appcontext"""
+    """ Methods for handling app.teardown_appcontext calling method close """
     storage.close()
 
 
 if __name__ == "__main__":
-    """the main function main"""
+    """ The main function main """
     host = environ.get("HBNB_API_HOST")
     port = environ.get("HBNB_API_PORT")
     if not host:
@@ -25,4 +25,3 @@ if __name__ == "__main__":
     if not port:
         port = 5000
     app.run(host=host, port=port, threaded=True)
-
