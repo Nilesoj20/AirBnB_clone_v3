@@ -52,11 +52,10 @@ class FileStorage:
 
     def reload(self):
         """deserializes the JSON file to __objects"""
-        try:
-            with open(self.__file_path, 'r') as f:
-                jo = json.load(f)
-            for key in jo:
-                self.__objects[key] = classes[jo[key]["__class__"]](**jo[key])
+        with open(self.__file_path, 'r') as f:
+            jo = json.load(f)
+        for key in jo:
+            self.__objects[key] = classes[jo[key]["__class__"]](**jo[key])
 
     def delete(self, obj=None):
         """delete obj from __objects if it’s inside"""
@@ -71,11 +70,11 @@ class FileStorage:
 
     def get(self, cls, id):
         """method to retrieve an object """
-           todos = models.storage.all()
-           for valor in todos.values():
-                      if valor.id == id:
-                      return valor
-           return None
+        todos = models.storage.all()
+        for valor in todos.values():
+            if valor.id == id:
+                return valor
+        return None
 
     def count(self, cls=None):
         """ method to count the number of stored objects """
